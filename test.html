@@ -1,20 +1,50 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Click Button Example</title>
+    <title>Random Authentication Number</title>
+    <style>
+        #auth-container {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-    <button id="myButton">Click Me</button>
-    <p id="outputText"></p>
+    <button id="generate-auth-btn">대여</button>
+    <div id="auth-container">
+        <label for="auth-input">인증번호를 입력해주세요:</label>
+        <input type="text" id="auth-input">
+        <button id="submit-auth-btn">Submit</button>
+    </div>
+    <p id="result-message"></p> <!-- Element to display the result message -->
 
     <script>
-        // Get a reference to the button and output element
-        var button = document.getElementById("myButton");
-        var output = document.getElementById("outputText");
+        // Function to generate a random 6-digit authentication number
+        function generateRandomAuthNumber() {
+            return Math.floor(100000 + Math.random() * 900000);
+        }
 
-        // Add a click event listener to the button
-        button.addEventListener("click", function() {
-            output.innerHTML = "Hi";
+        let authNumber;
+
+        // Handle button click to generate authentication number
+        document.getElementById("generate-auth-btn").addEventListener("click", function () {
+            authNumber = generateRandomAuthNumber();
+            alert("Generated Authentication Number: " + authNumber);
+
+            const authContainer = document.getElementById("auth-container");
+            authContainer.style.display = "block";
+        });
+
+        // Handle button click to submit authentication number
+        document.getElementById("submit-auth-btn").addEventListener("click", function () {
+            const inputAuthNumber = document.getElementById("auth-input").value;
+
+            if (authNumber === Number(inputAuthNumber)) {
+                // Display the result message on the web page
+                document.getElementById("result-message").textContent = "확인되었습니다.";
+            } else {
+                // Display an error message
+                document.getElementById("result-message").textContent = "인증번호가 일치하지 않습니다. 다시 시도하세요.";
+            }
         });
     </script>
 </body>
