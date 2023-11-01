@@ -1,6 +1,3 @@
-<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-<script type="text/javascript" src="https://service.iamport.kr/js/iamport.payment-1.1.5.js"></script>
-
 <html>
 <head>
   <center>
@@ -12,25 +9,11 @@
 </head>
 <body>
  
-<h1> 인증이 완료되었습니다. <br>돗자리 요금 5000원 결제를 진행합니다.<br>(5000원은 반납 이후 환불됩니다.)</h1>
- <button
-  class="fit-picture"
-  alt="Grapefruit slice atop a pile of other slices" id="myButton">
-  <img src="https://developers.kakao.com/tool/resource/static/img/button/pay/payment_icon_yellow_medium.png">
-<form method="post" action="/kakaoPay">
-</form>
+<h1> 결제가 완료되었습니다. <br>
+  결제된 5000원은 반납 시 환불됩니다. 
+  <br> 음성 안내에 따라 돗자리를 자판기에서 꺼내주세요</h1>
+
  </button>
  </center>
-
-<!-- jQuery 라이브러리를 포함하고 아래 스크립트 코드를 작성합니다. -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    // 버튼 클릭 이벤트 핸들러
-    $(document).ready(function() {
-        $('#myButton').click(function() {
-            window.location.href = 'test4.html';
-        });
-    });
-</script>
 </body>
 </html>
