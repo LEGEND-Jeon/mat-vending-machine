@@ -1,51 +1,67 @@
-<!DOCTYPE html>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="https://service.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+
 <html>
 <head>
-    <title>Random Authentication Number</title>
-    <style>
-        #auth-container {
-            display: none;
-        }
-    </style>
+  <center>
+    <br>
+    <br>
+    <br>
+<meta charset="UTF-8">
+<title>Insert title here</title>
 </head>
 <body>
-    <button id="generate-auth-btn">대여</button>
-    <div id="auth-container">
-        <label for="auth-input">인증번호를 입력해주세요:</label>
-        <input type="text" id="auth-input">
-        <button id="submit-auth-btn">Submit</button>
-    </div>
-    <p id="result-message"></p> <!-- Element to display the result message -->
+ 
+<h1> 인증이 완료되었습니다. <br>돗자리 요금 5000원 결제를 진행합니다.<br>(5000원은 반납 이후 환불됩니다.)</h1>
+ <button
+  class="fit-picture"
+  alt="Grapefruit slice atop a pile of other slices" id="myButton">
+  <img src="https://developers.kakao.com/tool/resource/static/img/button/pay/payment_icon_yellow_medium.png">
+<form method="post" action="/kakaoPay">
+</form>
+ </button>
+ </center>
 
-    <script>
-        // Function to generate a random 6-digit authentication number
-        function generateRandomAuthNumber() {
-            return Math.floor(100000 + Math.random() * 900000);
-        }
+<script>
+        // 버튼 클릭 이벤트 핸들러
+        //document.getElementById("myButton").addEventListener("click", function() {
+        $('#myButton').click(function(){
+            // 팝업 창 열기
+            // 여기에서 원하는 URL을 지정하고 팝업 창의 크기 및 속성을 설정할 수 있습니다.
+            //window.open('https://www.example.com', '팝업 창 이름', 'width=400,height=400');
 
-        let authNumber;
-
-        // Handle button click to generate authentication number
-        document.getElementById("generate-auth-btn").addEventListener("click", function () {
-            authNumber = generateRandomAuthNumber();
-            alert("Generated Authentication Number: " + authNumber);
-
-            const authContainer = document.getElementById("auth-container");
-            authContainer.style.display = "block";
-        });
-
-        // Handle button click to submit authentication number
-        document.getElementById("submit-auth-btn").addEventListener("click", function () {
-            const inputAuthNumber = document.getElementById("auth-input").value;
-
-            if (authNumber === Number(inputAuthNumber)) {
-                // Display the result message on the web page
-                document.getElementById("result-message").textContent = "확인되었습니다.";
+        var IMP = window.IMP; // 생략가능
+        IMP.init('imp43035337');
+        // i'mport 관리자 페이지 -> 내정보 -> 가맹점식별코드
+        // ''안에 띄어쓰기 없이 가맹점 식별코드를 붙여넣어주세요. 안그러면 결제창이 안뜹니다.
+        IMP.request_pay({
+              pg: "kakaopay.TC0ONETIME",
+              pay_method: "card", // 생략가
+              merchant_uid: "order_no_0001", // 상점에서 생성한 고유 주문번호
+              name: "주문명:결제테스트",
+              amount: 1004,
+              buyer_email: "test@portone.io",
+              buyer_name: "구매자이름",
+              buyer_tel: "010-1234-5678",
+              buyer_addr: "서울특별시 강남구 삼성동",
+              buyer_postcode: "123-456",
+              m_redirect_url: "{모바일에서 결제 완료 후 리디렉션 될 URL}"
+            }, function (rsp) {
+            console.log(rsp);
+            if (rsp.success) {
+                var msg = '결제가 완료되었습니다.';
+                msg += '결제 금액 : ' + rsp.paid_amount;
+                // success.submit();
+                document.getElementById('payment_form').submit();
+                // 결제 성공 시 정보를 넘겨줘야한다면 body에 form을 만든 뒤 위의 코드를 사용하는 방법이 있습니다.
+                // 자세한 설명은 구글링으로 보시는게 좋습니다.
             } else {
-                // Display an error message
-                document.getElementById("result-message").textContent = "인증번호가 일치하지 않습니다. 다시 시도하세요.";
+                var msg = '결제에 실패하였습니다.';
+                msg += '에러내용 : ' + rsp.error_msg;
             }
+            alert(msg);
         });
-    </script>
+    }); 
+</script>
 </body>
 </html>
