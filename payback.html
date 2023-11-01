@@ -17,11 +17,6 @@
  </center>
 
 <script>
-        // 버튼 클릭 이벤트 핸들러
-        //document.getElementById("myButton").addEventListener("click", function() {
-            // 팝업 창 열기
-            // 여기에서 원하는 URL을 지정하고 팝업 창의 크기 및 속성을 설정할 수 있습니다.
-            //window.open('https://www.example.com', '팝업 창 이름', 'width=400,height=400');
 
         var IMP = window.IMP; // 생략가능
         IMP.init('imp43035337');
@@ -31,17 +26,14 @@
               pg: "kakaopay.TC0ONETIME",
               merchant_uid: "order_no_0002", // 상점에서 생성한 고유 주문번호
               name: "돗자리 대여",
-              amount: 5000,
-              buyer_email: "pineapple7358@naver.com",
+              cancel_amount: 5000,
               buyer_name: "user_",
-              buyer_tel: "010-1234-5678",
-              buyer_addr: "서울특별시 강서구",
-              buyer_postcode: "123-456",
+              cancel_tax_free_amount=0
             }, function (rsp) {
             console.log(rsp);
             if (rsp.success) {
                 var msg = '환불이 완료되었습니다.';
-                msg += '환불 금액 : ' + rsp.paid_amount;
+                msg += '환불 금액 : ' + rsp.cancel_amount;
                 // success.submit();
                 document.getElementById('payment_form').submit();
                 // 결제 성공 시 정보를 넘겨줘야한다면 body에 form을 만든 뒤 위의 코드를 사용하는 방법이 있습니다.
