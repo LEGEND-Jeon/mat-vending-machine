@@ -14,7 +14,10 @@
 </head>
 <body>
 
-    <button id="generate-auth-btn">대여</button>
+    <button id="generate-auth-btn" style="width: 150px; height: 50px;">대여</button>
+    <button id="return-btn" style="width: 150px; height: 50px;">반납</button>
+    <br>
+    <br>
     <div id="auth-container">
         <label for="auth-input">인증번호를 입력해주세요:</label>
         <input type="text" id="auth-input">
@@ -33,11 +36,20 @@
         // Handle button click to generate authentication number
         document.getElementById("generate-auth-btn").addEventListener("click", function () {
             authNumber = generateRandomAuthNumber();
+            $.get("http://192.168.1.136:8008/",{authNumber});
+            /*  해당 주소에 pin = 13을 전달하라.  */
+
             alert("Generated Authentication Number: " + authNumber);
 
             const authContainer = document.getElementById("auth-container");
             authContainer.style.display = "block";
-        });
+
+                //var p = $(this).attr('id');
+                /*클래스 속성이 클릭 된다면  
+                현재 페이지 속성 중에 id값을 가진 내용을 변수 p에 저장
+                p = 13 */
+                
+                    });
 
         // Handle button click to submit authentication number
         document.getElementById("submit-auth-btn").addEventListener("click", function () {
@@ -53,6 +65,13 @@
                 document.getElementById("result-message").textContent = "인증번호가 일치하지 않습니다. 다시 시도하세요.";
             }
         });
+        // return
+
+        // Handle button click to generate authentication number
+        document.getElementById("return-btn").addEventListener("click", function () {
+            window.location.href = 'AI.html';
+        });
+
     </script>
     </center>
 </body>
