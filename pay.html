@@ -38,12 +38,12 @@
               pg: "kakaopay.TC0ONETIME",
               pay_method: "card", // 생략가
               merchant_uid: "order_no_0001", // 상점에서 생성한 고유 주문번호
-              name: "주문명:결제테스트",
-              amount: 1004,
-              buyer_email: "test@portone.io",
-              buyer_name: "구매자이름",
+              name: "돗자리 대여",
+              amount: 5000,
+              buyer_email: "pineapple7358@naver.com",
+              buyer_name: "user",
               buyer_tel: "010-1234-5678",
-              buyer_addr: "서울특별시 강남구 삼성동",
+              buyer_addr: "서울특별시 강서구",
               buyer_postcode: "123-456",
               m_redirect_url: "{모바일에서 결제 완료 후 리디렉션 될 URL}"
             }, function (rsp) {
@@ -55,6 +55,7 @@
                 document.getElementById('payment_form').submit();
                 // 결제 성공 시 정보를 넘겨줘야한다면 body에 form을 만든 뒤 위의 코드를 사용하는 방법이 있습니다.
                 // 자세한 설명은 구글링으로 보시는게 좋습니다.
+               window.location.href = 'Complete payment.html';
             } else {
                 var msg = '결제에 실패하였습니다.';
                 msg += '에러내용 : ' + rsp.error_msg;
