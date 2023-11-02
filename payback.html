@@ -1,29 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>결제 취소</title>
+</head>
+<body>
+    <button id="cancelButton">결제 취소</button>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script>
+        $('#cancelButton').click(function () {
+            var IMP = window.IMP; // 생략가능
+            IMP.init('imp43035337'); // 가맹점 식별코드를 입력하세요
 
-<script
-  src="https://code.jquery.com/jquery-3.3.1.min.js"
-  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-  crossorigin="anonymous"></script>
-<script>
-  function cancelPay() {
-    jQuery.ajax({
-      // 예: http://www.myservice.com/payments/cancel
-      "url": "https://kapi.kakao.com/v1/payment/cancel", 
-      "type": "POST",
-      "contentType": "application/json",
-      "data": JSON.stringify({
-        "merchant_uid": "T1", // 예: ORD20180131-0000011
-        "cancel_request_amount": 5000, // 환불금액
-        "reason": "돗자리 반납" // 환불사유
-        // [가상계좌 환불시 필수입력] 환불 수령계좌 예금주
-        //"refund_holder": "user", 
-        // [가상계좌 환불시 필수입력] 환불 수령계좌 은행코드(예: KG이니시스의 경우 신한은행은 88번)
-        //"refund_bank": "88" 
-        // [가상계좌 환불시 필수입력] 환불 수령계좌 번호
-        //"refund_account": "56211105948400" 
-      }),
-      "dataType": "json"
-    });
-  }
-</script>
+            // 결제 취소 정보 설정
+            var cancelData = {
+                imp_uid: 'imp_400288796791', // 결제 고유 번호
+                merchant_uid: 'T2', // 상점에서 생성한 고유 주문번호
+            };
 
-
+            IMP.request_cancel(cancelData, function (rsp) {
+                console.log(rsp);
+                if (rsp.success) {
+                    var msg = '결제가 취소되었습니다.';
+                    msg += '취소된 금액 : ' + rsp.amount;
+                    alert(msg);
+                    // 취소가 성공했을 때 실행할 코드를 추가할 수 있습니다.
+                } else {
+                    var msg = '결제 취소에 실패하였습니다.';
+                    msg += '에러내용 : ' + rsp.error_msg;
+                    alert(msg);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
