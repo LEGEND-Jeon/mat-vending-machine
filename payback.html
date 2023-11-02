@@ -23,7 +23,10 @@
 
             IMP.request_pay({
                 pg: 'kakaopay.TC0ONETIME', // 사용한 PG사 설정
-                ... // 기타 결제 정보 설정
+                "cid": "TC0ONETIME",
+		        "tid": "T2",
+                "cancel_amount": 2200,
+                "cancel_tax_free_amount": 0,
             }, function (rsp) {
                 console.log(rsp);
                 if (rsp.success) {
