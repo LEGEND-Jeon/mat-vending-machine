@@ -1,56 +1,29 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>KakaoPay 결제 취소</title>
-</head>
-<body>
-    <button id="cancelButton">결제 취소</button>
+<button onclick="cancelPay()">환불하기</button>
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+<script>
+  function cancelPay() {
+    jQuery.ajax({
+      // 예: http://www.myservice.com/payments/cancel
+      "url": "https://kapi.kakao.com/v1/payment/cancel", 
+      "type": "POST",
+      "contentType": "application/json",
+      "data": JSON.stringify({
+        "merchant_uid": "T1", // 예: ORD20180131-0000011
+        "cancel_request_amount": 5000, // 환불금액
+        "reason": "돗자리 반납" // 환불사유
+        // [가상계좌 환불시 필수입력] 환불 수령계좌 예금주
+        "refund_holder": "홍길동", 
+        // [가상계좌 환불시 필수입력] 환불 수령계좌 은행코드(예: KG이니시스의 경우 신한은행은 88번)
+        "refund_bank": "88" 
+        // [가상계좌 환불시 필수입력] 환불 수령계좌 번호
+        "refund_account": "56211105948400" 
+      }),
+      "dataType": "json"
+    });
+  }
+</script>
 
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
-    <script>
-        // 클라이언트에서 결제 취소 요청 보내는 함수
-        const requestCancel = async () => {
-            try {
-                // 결제 고유 번호 및 취소할 금액을 설정
-                const tid = "T1234567890123456789";
-                const cancel_amount = 5000; // 환불할 금액
-                
-                // KakaoPay API 키 및 취소 요청 정보 설정
-                const apiKey = 'fdbbebcde83394e6c92f404294dcfe30';
-                const cancelData = {
-                    cid: "TC0ONETIME",
-                    tid: tid,
-                    cancel_amount: cancel_amount,
-                    cancel_tax_free_amount: 0, // 비과세 금액
-                    cancel_vat_amount: 0, // 부가세 금액
-                };
-                
-                // 결제 취소 요청 보내기
-                const response = await axios.post('https://kapi.kakao.com/v1/payment/cancel', cancelData, {
-                    headers: {
-                        'Authorization': `KakaoAK ${apiKey}`
-                    }
-                });
-                
-                const data = response.data;
-                console.log(data);
-                
-                // 취소 요청 결과 처리
-                if (data.status === 'CANCELED') {
-                    console.log('결제가 취소되었습니다.');
-                } else {
-                    console.error('결제 취소에 실패했습니다.');
-                }
-            } catch (error) {
-                console.error(error);
-            }
-        };
-
-        // 버튼 클릭 시 결제 취소 요청 보내기
-        document.getElementById('cancelButton').addEventListener('click', requestCancel);
-    </script>
-</body>
-</html>
 
