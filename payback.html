@@ -1,34 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>결제 취소</title>
+</head>
+<body>
+    <button id="cancelButton" onclick="cancelKpay()">결제 취소</button>
 
-<script>
-function cancelKpay(tid, cancelAmount, taxFree) {
-    var httpHeaders = new Headers();
-    httpHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-    httpHeaders.append("Authorization", "KakaoAK fdbbebcde83394e6c92f404294dcfe30");
+    <script>
+        function cancelKpay() {
+            var kakaoAdminKey = "fdbbebcde83394e6c92f404294dcfe30"; // Kakao Pay 관리자 키를 입력하세요
 
-    var formData = new FormData();
-    formData.append("cid", "TC0ONETIME");
-    formData.append("cancel_amount", 5000);
-    formData.append("partner_user_id", "user");
-    formData.append("tid", "T2");
-    formData.append("cancel_tax_free_amount", 0);
+            var httpHeaders = new Headers();
+            httpHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+            httpHeaders.append("Authorization", "KakaoAK " + kakaoAdminKey);
 
-    fetch("https://kapi.kakao.com/v1/payment/cancel", {
-        method: "POST",
-        headers: httpHeaders,
-        body: formData
-    })
-    .then(function(response) {
-        return response.json();
-    })
-    .then(function(data) {
-        console.log("통신 결과: " + JSON.stringify(data));
-        // 여기에서 결과를 처리하거나 페이지를 업데이트할 수 있습니다.
-        return true;
-    })
-    .catch(function(error) {
-        console.error("환불 실패 사유: " + error.message);
-        return false;
-    });
-}
-       
+            var formData = new FormData();
+            formData.append("cid", "TC0ONETIME");
+            formData.append("cancel_amount", 5000);
+            formData.append("partner_user_id", "user");
+            formData.append("tid", "T2");
+            formData.append("cancel_tax_free_amount", 0);
+
+            fetch("https://kapi.kakao.com/v1/payment/cancel", {
+                method: "POST",
+                headers: httpHeaders,
+                body: formData
+            })
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+                console.log("통신 결과: " + JSON.stringify(data));
+                if (data.success) {
+                    var msg = '결제가 취소되었습니다.';
+                    msg += '취소된 금액: ' + data.amount;
+                    alert(msg);
+                } else {
+                    var msg = '결제 취소에 실패하였습니다.';
+                    msg += '에러내용: ' + data.error_msg;
+                    alert(msg);
+                }
+            })
+            .catch(function(error) {
+                console.error("환불 실패 사유: " + error.message);
+            });
+        }
     </script>
+</body>
+</html>
