@@ -1,51 +1,28 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>결제 취소</title>
-</head>
-<body>
-    <button id="cancelButton" onclick="cancelKpay()">결제 취소</button>
+<button onclick="cancelPay()">환불하기</button>
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+<script>
+  function cancelPay() {
+    jQuery.ajax({
+      // 예: http://www.myservice.com/payments/cancel
+      "url": "https://kapi.kakao.com/v1/payment/cancel", 
+      "type": "POST",
+      "contentType": "application/x-www-form-urlencoded;charset=utf-8",
+      "data": JSON.stringify({
+        "merchant_uid": "T2", // 예: ORD20180131-0000011
+        "cancel_request_amount": 5000, // 환불금액
+        "reason": "테스트 결제 환불" // 환불사유
+        // [가상계좌 환불시 필수입력] 환불 수령계좌 예금주
+        "refund_holder": "user", 
+        // [가상계좌 환불시 필수입력] 환불 수령계좌 은행코드(예: KG이니시스의 경우 신한은행은 88번)
+        "refund_bank": "88" 
+        // [가상계좌 환불시 필수입력] 환불 수령계좌 번호
+        "refund_account": "56211105948400" 
+      }),
+      "dataType": "json"
+    });
+  }
+</script>
 
-    <script>
-        function cancelKpay() {
-            var kakaoAdminKey = "fdbbebcde83394e6c92f404294dcfe30"; // Kakao Pay 관리자 키를 입력하세요
-
-            var httpHeaders = new Headers();
-            httpHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-            httpHeaders.append("Authorization", "KakaoAK " + kakaoAdminKey);
-
-            var data = new FormData();
-            data.append("cid", "TC0ONETIME");
-            data.append("cancel_amount", 5000);
-            data.append("partner_user_id", "user");
-            data.append("tid", "T2");
-            data.append("cancel_tax_free_amount", 0);
-
-            fetch("https://kapi.kakao.com/v1/payment/cancel", {
-                method: "POST",
-                headers: httpHeaders,
-                body: data
-            })
-            .then(function(response) {
-                return response.json();
-            })
-            .then(function(data) {
-                console.log("통신 결과: " + JSON.stringify(data));
-                if (data.success) {
-                    var msg = '결제가 취소되었습니다.';
-                    msg += '취소된 금액: ' + data.amount;
-                    alert(msg);
-                } else {
-                    var msg = '결제 취소에 실패하였습니다.';
-                    msg += '에러내용: ' + data.error_msg;
-                    alert(msg);
-                }
-            })
-            .catch(function(error) {
-                console.error("환불 실패 사유: " + error.message);
-            });
-        }
-    </script>
-</body>
-</html>
