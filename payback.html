@@ -1,62 +1,34 @@
-<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-<script type="text/javascript" src="https://service.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>결제 취소</title>
-</head>
-<body>
-<form method="post" action="https://kapi.kakao.com/v1/payment/cancel">
-</form>
-    <button id="cancelButton">결제 취소</button>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-    <script>
-        $('#cancelButton').click(function () {
-            var IMP = window.IMP; // 생략가능
-            IMP.init('imp43035337'); // 가맹점 식별코드를 입력하세요
+<script>
+function cancelKpay(tid, cancelAmount, taxFree) {
+    var httpHeaders = new Headers();
+    httpHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+    httpHeaders.append("Authorization", "KakaoAK fdbbebcde83394e6c92f404294dcfe30");
 
-            // 결제 취소 정보 설정
-            var cancelData = {
-                imp_uid: 'imp_400288796791', // 결제 고유 번호
-                merchant_uid: 'T2', // 상점에서 생성한 고유 주문번호
-            };
+    var formData = new FormData();
+    formData.append("cid", "TC0ONETIME");
+    formData.append("cancel_amount", 5000);
+    formData.append("partner_user_id", "user");
+    formData.append("tid", "T2");
+    formData.append("cancel_tax_free_amount", 0);
 
-            IMP.request_pay({
-                pg: 'kakaopay.TC0ONETIME', // 사용한 PG사 설정
-                "cid": "TC0ONETIME",
-		"tid": "T2",
-		"name" : "돗자리 대여",
-                "amount": 5000,
-                "tax_free_amount": 0,
-            }, function (rsp) {
-                console.log(rsp);
-                if (rsp.success) {
-                    // 결제 성공 시의 작업 수행
-
-                    // 결제 성공 시 생성된 imp_uid를 사용하여 결제 취소 요청
-                    IMP.cancel({
-                        imp_uid: cancelData.imp_uid,
-                        merchant_uid: cancelData.merchant_uid,
-                    }, function (cancelRsp) {
-                        console.log(cancelRsp);
-                        if (cancelRsp.success) {
-                            var msg = '결제가 취소되었습니다.';
-                            msg += '취소된 금액 : ' + cancelRsp.amount;
-                            alert(msg);
-                            // 취소가 성공했을 때 실행할 코드를 추가할 수 있습니다.
-                        } else {
-                            var msg = '결제 취소에 실패하였습니다.';
-                            msg += '에러내용 : ' + cancelRsp.error_msg;
-                            alert(msg);
-                        }
-                    });
-                }
-            });
-        });
+    fetch("https://kapi.kakao.com/v1/payment/cancel", {
+        method: "POST",
+        headers: httpHeaders,
+        body: formData
+    })
+    .then(function(response) {
+        return response.json();
+    })
+    .then(function(data) {
+        console.log("통신 결과: " + JSON.stringify(data));
+        // 여기에서 결과를 처리하거나 페이지를 업데이트할 수 있습니다.
+        return true;
+    })
+    .catch(function(error) {
+        console.error("환불 실패 사유: " + error.message);
+        return false;
+    });
+}
+       
     </script>
-</body>
-</html>
-
-</html>
