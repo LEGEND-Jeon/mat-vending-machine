@@ -35,15 +35,13 @@
         // i'mport 관리자 페이지 -> 내정보 -> 가맹점식별코드
         // ''안에 띄어쓰기 없이 가맹점 식별코드를 붙여넣어주세요. 안그러면 결제창이 안뜹니다.
         IMP.request_pay({
-              pg: "kakaopay.TC0ONETIME",
-              merchant_uid: "T1234567890123456789", // 상점에서 생성한 고유 주문번호
-              name: "돗자리 대여",
-              amount: 5000,
-              buyer_email: "pineapple7358@naver.com",
-              buyer_name: "user",
-              buyer_tel: "010-1234-5678",
-              buyer_addr: "서울특별시 강서구",
-              buyer_postcode: "123-456",
+              cid: "TC0ONETIME",
+              partner_order_id :"T1234567890123456789",
+              partner_user_id: 'user',
+              item_name:'돗자리 대여',
+              quantity: 1,
+              total_amount: 5000,
+              tax_free_amount : 0
             }, function (rsp) {
             console.log(rsp);
             if (rsp.success) {
