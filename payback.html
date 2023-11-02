@@ -15,17 +15,17 @@
             httpHeaders.append("Content-Type", "application/x-www-form-urlencoded");
             httpHeaders.append("Authorization", "KakaoAK " + kakaoAdminKey);
 
-            var formData = new FormData();
-            formData.append("cid", "TC0ONETIME");
-            formData.append("cancel_amount", 5000);
-            formData.append("partner_user_id", "user");
-            formData.append("tid", "T2");
-            formData.append("cancel_tax_free_amount", 0);
+            var data = new FormData();
+            data.append("cid", "TC0ONETIME");
+            data.append("cancel_amount", 5000);
+            data.append("partner_user_id", "user");
+            data.append("tid", "T2");
+            data.append("cancel_tax_free_amount", 0);
 
             fetch("https://kapi.kakao.com/v1/payment/cancel", {
                 method: "POST",
                 headers: httpHeaders,
-                body: formData
+                body: data
             })
             .then(function(response) {
                 return response.json();
