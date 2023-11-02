@@ -1,5 +1,6 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script type="text/javascript" src="https://service.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,6 +9,7 @@
 </head>
 <body>
     <button id="cancelButton">결제 취소</button>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     <script>
         $('#cancelButton').click(function () {
             var IMP = window.IMP; // 생략가능
@@ -19,15 +21,33 @@
                 merchant_uid: 'T2', // 상점에서 생성한 고유 주문번호
             };
 
-            IMP.request_cancel(cancelData, function (rsp) {
+            IMP.request_pay({
+                pg: 'kakaopay.TC0ONETIME', // 사용한 PG사 설정
+                ... // 기타 결제 정보 설정
+            }, function (rsp) {
                 console.log(rsp);
                 if (rsp.success) {
-                    var msg = '결제가 취소되었습니다.';
-                    msg += '취소된 금액 : ' + rsp.amount;
-                    alert(msg);
-                    // 취소가 성공했을 때 실행할 코드를 추가할 수 있습니다.
+                    // 결제 성공 시의 작업 수행
+
+                    // 결제 성공 시 생성된 imp_uid를 사용하여 결제 취소 요청
+                    IMP.cancel({
+                        imp_uid: cancelData.imp_uid,
+                        merchant_uid: cancelData.merchant_uid,
+                    }, function (cancelRsp) {
+                        console.log(cancelRsp);
+                        if (cancelRsp.success) {
+                            var msg = '결제가 취소되었습니다.';
+                            msg += '취소된 금액 : ' + cancelRsp.amount;
+                            alert(msg);
+                            // 취소가 성공했을 때 실행할 코드를 추가할 수 있습니다.
+                        } else {
+                            var msg = '결제 취소에 실패하였습니다.';
+                            msg += '에러내용 : ' + cancelRsp.error_msg;
+                            alert(msg);
+                        }
+                    });
                 } else {
-                    var msg = '결제 취소에 실패하였습니다.';
+                    var msg = '결제에 실패하였습니다.';
                     msg += '에러내용 : ' + rsp.error_msg;
                     alert(msg);
                 }
@@ -35,4 +55,6 @@
         });
     </script>
 </body>
+</html>
+
 </html>
