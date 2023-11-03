@@ -3,6 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Teachable Machine Image Model</title>
+    <p style="font-size: 20px;">돗자리 앞면을 카메라에 비춰주세요.</p>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -97,7 +98,7 @@
         }
         if (prediction[0].probability >= 0.99) {
             // Redirect to 'payback.html'
-            window.location.href = 'refund.html';
+            window.location.href = 'AI_2.html';
         } else if (prediction[1].probability >= 0.9) {
             // Display a message
             labelContainer.childNodes[0].innerHTML = "돗자리에 이물질이 있습니다. 돗자리를 깨끗히 닦고 다시 시도해주세요.";
