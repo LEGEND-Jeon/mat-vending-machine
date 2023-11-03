@@ -1,0 +1,65 @@
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="https://service.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+
+<html>
+<head>
+  <center>
+    <br>
+    <br>
+    <br>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+ 
+<h1> 인증이 완료되었습니다. <br>돗자리 요금 5000원 결제를 진행합니다.<br>(5000원은 반납 이후 환불됩니다.)</h1>
+ <button
+  class="fit-picture"
+  alt="Grapefruit slice atop a pile of other slices" id="myButton">
+  <img src="https://developers.kakao.com/tool/resource/static/img/button/pay/payment_icon_yellow_medium.png">
+<form method="post" action="https://kapi.kakao.com/v1/payment/ready">
+</form>
+ </button>
+ </center>
+
+<script>
+        // 버튼 클릭 이벤트 핸들러
+        //document.getElementById("myButton").addEventListener("click", function() {
+        $('#myButton').click(function(){
+            // 팝업 창 열기
+            // 여기에서 원하는 URL을 지정하고 팝업 창의 크기 및 속성을 설정할 수 있습니다.
+            //window.open('https://www.example.com', '팝업 창 이름', 'width=400,height=400');
+
+        var IMP = window.IMP; // 생략가능
+        IMP.init('imp43035337');
+IMP.request_pay({
+	pg : "html5_inicis.INIBillTst", // 실제 계약 후에는 실제 상점아이디로 변경
+	pay_method : 'card', // 'card'만 지원됩니다.
+	merchant_uid: "order_monthly_0001", // 상점에서 관리하는 주문 번호
+	name : '돗자리 대여',
+	amount : 1, // 결제창에 표시될 금액. 실제 승인이 이루어지지는 않습니다. (모바일에서는 가격이 표시되지 않음)
+	customer_uid : 'T1', // 필수 입력.
+	buyer_email : 'iamport@siot.do',
+	buyer_name : '아임포트',
+	buyer_tel : '02-1234-1234',
+	m_redirect_url : 'https://legend-jeon.github.io/mat-vending-machine/Complete_payment.html' // 예: https://www.my-service.com/payments/complete/mobile
+},function (rsp) {
+              console.log(rsp);
+            if (rsp.success) {
+                var msg = '결제가 완료되었습니다.';
+                msg += '결제 금액 : ' + rsp.paid_amount;
+                window.location.href = 'Complete_payment.html';
+                // success.submit();
+                //document.getElementById('payment_form').submit();
+                // 결제 성공 시 정보를 넘겨줘야한다면 body에 form을 만든 뒤 위의 코드를 사용하는 방법이 있습니다.
+                // 자세한 설명은 구글링으로 보시는게 좋습니다.
+            } else {
+                var msg = '결제에 실패하였습니다.';
+                msg += '에러내용 : ' + rsp.error_msg;
+            }
+            alert(msg);
+        });
+    }); 
+</script>
+</body>
+</html>
