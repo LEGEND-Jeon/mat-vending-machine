@@ -50,6 +50,15 @@
     async function predict() {
         // predict can take in an image, video or canvas html element
         const prediction = await model.predict(webcam.canvas);
+        // Check if the first class has a probability greater than or equal to 0.9
+        if (prediction[0].probability >= 0.9) {
+            // Redirect to 'payback.html'
+            window.location.href = 'payback.html';
+        }
+        if (prediction[1].probability >= 0.9) {
+            // Redirect to 'payback.html'
+            labelContainer.childNodes[0].innerHTML = "돗자리에 이물질이 있습니다. 돗자리를 깨끗히 닦고 다시 시도해주세요.";
+        }
         for (let i = 0; i < maxPredictions; i++) {
             const classPrediction =
                 prediction[i].className + ": " + prediction[i].probability.toFixed(2);
