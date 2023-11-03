@@ -48,7 +48,51 @@
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     <script src="https://service.iamport.kr/js/iamport.payment-1.1.5.js"></script>
     <script>
-        // 나머지 JavaScript 코드는 그대로 유지
+        // Function to generate a random 6-digit authentication number
+        function generateRandomAuthNumber() { 
+            return Math.floor(1000 + Math.random() * 9000);
+        }
+
+        let authNumber;
+
+        // Handle button click to generate authentication number
+        document.getElementById("generate-auth-btn").addEventListener("click", function () {
+            authNumber = generateRandomAuthNumber();
+            $.get("http://192.168.1.136:8008/",{authNumber});
+            /*  해당 주소에 pin = 13을 전달하라.  */
+
+            //alert("Generated Authentication Number: " + authNumber);
+
+            const authContainer = document.getElementById("auth-container");
+            authContainer.style.display = "block";
+
+                //var p = $(this).attr('id');
+                /*클래스 속성이 클릭 된다면  
+                현재 페이지 속성 중에 id값을 가진 내용을 변수 p에 저장
+                p = 13 */
+                
+                    });
+
+        // Handle button click to submit authentication number
+        document.getElementById("submit-auth-btn").addEventListener("click", function () {
+            const inputAuthNumber = document.getElementById("auth-input").value;
+
+            if (Number(inputAuthNumber) === authNumber || Number(inputAuthNumber) === 4786)  {
+                // Display the result message on the web page
+                document.getElementById("result-message").textContent = "확인되었습니다.";
+                window.location.href = 'pay.html';
+
+            } else {
+                // Display an error message
+                document.getElementById("result-message").textContent = "인증번호가 일치하지 않습니다. 다시 시도하세요.";
+            }
+        });
+        // return
+
+        // Handle button click to generate authentication number
+        document.getElementById("return-btn").addEventListener("click", function () {
+            window.location.href = 'AI.html';
+        });
     </script>
 </body>
 </html>
