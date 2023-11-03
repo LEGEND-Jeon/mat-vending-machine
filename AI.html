@@ -1,3 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Teachable Machine Image Model</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            text-align: center;
+        }
+
+        #webcam-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 60vh;
+        }
+
+        #label-container {
+            text-align: center;
+        }
+
+        #start-button {
+            width: 150px;
+            height: 50px;
+            margin: 20px;
+        }
+
+        @media (max-width: 768px) {
+            /* 모바일 화면용 스타일 */
+            #start-button {
+                width: 100px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
 <div>Teachable Machine Image Model</div>
 <button type="button" onclick="init()">Start</button>
 <div id="webcam-container"></div>
