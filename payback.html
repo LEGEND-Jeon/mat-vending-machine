@@ -1,26 +1,38 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script>
-        function refund() {
-            var formData = new FormData();
-            formData.append('cid', 'TC0ONETIME');
-            formData.append('tid', 'T4');
-            formData.append('cancel_amount', 5000);
-            formData.append('cancel_tax_free_amount', 0);
-
-            fetch('/refund', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                alert(data.message);
-            });
-        }
-    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-    <button onclick="refund()">환불 요청</button>
+    <button id="refundButton">환불 요청</button>
+
+    <script>
+        $(document).ready(function() {
+            $("#refundButton").click(function() {
+                var formData = new FormData();
+                formData.append('cid', 'TC0ONETIME');
+                formData.append('cancel_amount', 5000);
+                formData.append('cancel_tax_free_amount', 0);
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/refund',
+                    data: formData,
+                    headers: {
+                        'Authorization': 'fdbbebcde83394e6c92f404294dcfe30',
+                        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+                    },
+                    success: function(data) {
+                        alert(data.message);
+                    },
+                    error: function(xhr, status, error) {
+                        alert('환불 요청 실패: ' + error);
+                    },
+                    processData: false,
+                    contentType: false
+                });
+            });
+        });
+    </script>
 </body>
 </html>
