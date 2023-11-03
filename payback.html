@@ -1,44 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>카카오페이 API 환불 요청</title>
-</head>
-<body>
-    <button onclick="cancelPay()">환불하기</button>
-
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" 
-        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" 
-        crossorigin="anonymous"></script>
-
     <script>
-        function cancelPay() {
-            $.ajax({
-                url: "https://kapi.kakao.com/v1/payment/cancel",
-                type: "POST",
-                contentType: "application/x-www-form-urlencoded;charset=utf-8",
-                headers: {
-                    "Authorization": "fdbbebcde83394e6c92f404294dcfe30" // 여기에 카카오페이 API 키를 설정해야 합니다.
-                },
-                data: JSON.stringify({
-                    "cid": "TC0ONETIME",
-                    "tid": "T4",
-                    "cancel_amount": 5000,
-                    "cancel_tax_free_amount": 0
-                }),
-                dataType: "json",
-                success: function (data) {
-                    console.log(data);
-                    // 성공한 경우 처리할 코드
-                },
-                error: function (error) {
-                    console.error(error);
-                    // 오류가 발생한 경우 처리할 코드
-                }
+        function refund() {
+            var formData = new FormData();
+            formData.append('cid', 'TC0ONETIME');
+            formData.append('tid', 'T4');
+            formData.append('cancel_amount', 5000);
+            formData.append('cancel_tax_free_amount', 0);
+
+            fetch('/refund', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
             });
         }
     </script>
+</head>
+<body>
+    <button onclick="refund()">환불 요청</button>
 </body>
 </html>
-
