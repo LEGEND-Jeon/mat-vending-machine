@@ -64,7 +64,7 @@
             // Redirect to 'payback.html'
             labelContainer.childNodes[0].innerHTML = "돗자리에 이물질이 있습니다. 돗자리를 깨끗히 닦고 다시 시도해주세요.";
         }
-        else (prediction[2].probability >= 0.9) {
+        if(prediction[2].probability >= 0.9) {
             // Redirect to 'payback.html'
             labelContainer.childNodes[0].innerHTML = "돗자리가 인식되지 않습니다. 돗자리를 카메라에 비춰주세요.";
         }
